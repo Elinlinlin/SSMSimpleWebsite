@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.som.dao.IStuDao">
+   <resultMap type="Student" id="stuMap">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="origin" column="origin"/>
+		<result property="role" column="role"/>
+		<result property="place" column="place"/>
+		<result property="core" column="core"/>
+		<result property="pid" column="pid"/>
+		<result property="pay" column="pay"/>
+		<result property="day" column="day"/>
+		<result property="email" column="email"/>
+		<result property="goal" column="goal"/>
+		<result property="conmul" column="conmul"/>
+		<result property="email" column="email"/>
+		<result property="emailword" column="emailword"/>
+	</resultMap>
+	
+	<select id="findById" parameterType="int" resultType="Student">
+		select * from stu where id=#{id}
+	</select>
+	
+	<select id="findByName" parameterType="String" resultType="Student">
+		select * from stu where name=#{name} order by id desc
+	</select>
+	
+	<select id="findByOrigin" parameterType="String" resultType="Student">
+		select * from stu where origin=#{origin} order by id desc
+	</select>
+	
+	<select id="findHis" parameterType="int" resultType="Student" >
+		select * from stu where id=#{id}
+	</select>
+	
+	<select id="findOri" parameterType="int" resultType="String" >
+		select origin from stu where id=#{id}
+	</select>
+	
+	<select id="findThisOri" parameterType="String" resultType="Student" >
+	    select * from stu where origin=#{origin}
+	</select>
+	
+	<!-- 查询所有学生 
+		 理论上resultType要写List<Student>
+		 但这里只需书写List中的类型即可，即只需书写Student的全路径名
+	-->	
+	<select id="findAll" resultType="Student">
+		select * from stu order by id desc
+	</select>
+	
+	<insert id="add" parameterType="Student">
+		insert into stu (id,name,origin,role,place,core,pay,con,day,goal,email,emailword,pid) values(#{id},#{name},#{origin},#{role},#{place},#{core},#{pay},#{con},#{day},#{goal},#{email},#{emailword},#{pid})
+	</insert>
+	
+	<delete id="deleteById" parameterType="int">
+		delete from stu where id=#{id}
+	</delete>
+	
+	<update id="update" parameterType="Student">
+		update stu set name=#{name},origin=#{origin},role=#{role},place=#{place},core=#{core},con=#{con},day=#{day},pid=#{pid},pay=#{pay},email=#{email},emailword=#{emailword},goal=#{goal} where id=#{id}
+	</update>
+	
+	<select id="findPayParm" parameterType="int" resultType="java.util.HashMap">
+	    select pid,day,core,con from stu where id=#{id}
+	</select>
+	
+	<update id="setPay" parameterType="java.util.HashMap">
+	    update stu set pay=#{pay} where id=#{id}
+	</update>
+	
+	<select id="findEmail" parameterType="int" resultType="String">
+	    select email from stu where id=#{id}
+	</select>
+	
+	<select id="findEmailWord" parameterType="int" resultType="String">
+	    select emailword from stu where id=#{id}
+	</select>
+	
+	<select id="findAllId"  resultType="int">
+	   select id from stu 
+	</select>
+</mapper>
+

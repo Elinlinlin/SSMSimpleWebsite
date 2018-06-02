@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.som.dao.IFmDao">
+
+    <resultMap type="Fm" id="fmMap">
+        <id property="pid" column="pid"/>
+		<result property="daymul" column="daymul"/>
+		<result property="coremul" column="coremul"/>		
+		<result property="conmul" column="conmul"/>
+		<result property="basic" column="basic"/>
+	</resultMap>
+
+	
+	<select id="findMul" parameterType="int" resultType="java.util.HashMap">
+		select daymul,coremul,conmul,basic from fm where pid=#{pid} 
+	</select>
+	
+	<select id="findAllFm" resultType="fm">
+	    select * from fm order by pid desc
+	</select>
+	
+	<delete id="deleteFmById" parameterType="int">
+	    delete  from fm where pid=#{pid}
+	</delete>
+	
+	<select id="findFmById" parameterType="int" resultType="fm">
+	    select * from fm where pid=#{pid}
+	</select>
+	
+	<update id="update" parameterType="Fm">
+		update fm set daymul=#{daymul},coremul=#{coremul},conmul=#{conmul},basic=#{basic} where pid=#{pid}
+	</update>
+	
+	<insert id="add" parameterType="Fm">
+		insert into fm (pid,daymul,coremul,conmul,basic) values(#{pid},#{daymul},#{coremul},#{conmul},#{basic})
+	</insert>
+	
+	<select id="findAllPid" resultType="int" >
+	    select pid from fm
+	</select>
+	
+</mapper>

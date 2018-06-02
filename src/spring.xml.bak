@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+      
+	  http://www.springframework.org/schema/beans 
+	  http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	  
+	  http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-4.3.xsd
+ 	  
+	  http://www.springframework.org/schema/aop 
+	  http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+	  
+	  http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+    
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+        
+      ">
+      
+    
+     
+     
+    <!-- 閰嶇疆C3P0杩炴帴姹�,鐩殑锛氱鐞嗘暟鎹簱杩炴帴 -->
+      <bean id="comboPooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+      		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+      		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/stu_origin?useSSL=false""/>
+      		<property name="user" value="root"/>
+      		<property name="password" value="123456"/>
+      </bean>
+      
+    
+    <!-- 閰嶇疆SqlSessionFactoryBean锛岀洰鐨勶細鍔犺浇mybaits閰嶇疆鏂囦欢鍜屾槧灏勬枃浠讹紝鍗虫浛浠ｅ師Mybatis宸ュ叿绫荤殑浣滅敤 -->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<property name="configLocation" value="classpath:mybatis.xml"/>
+    	<property name="dataSource" ref="comboPooledDataSource"/>
+    	<!--閰嶇疆鎵弿寮忓姞杞絊QL鏄犲皠鏂囦欢,璁板緱鍘绘帀mybatis-config閰嶇疆-->
+		<property name="mapperLocations" value="classpath:com/som/dao/*.xml"/>
+    </bean>
+    
+     <!-- 閰嶇疆Mybatis鐨勪簨鍔＄鐞嗗櫒锛屽嵆鍥犱负Mybatis搴曞眰鐢ㄧ殑鏄疛DBC浜嬪姟绠′簨鍣紝鎵�浠ュ湪杩欓噷渚濈劧閰嶇疆JDBC浜嬪姟绠＄悊鍣� -->
+      <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      		<property name="dataSource" ref="comboPooledDataSource"/>
+      </bean>
+
+    <!-- 閰嶇疆浜嬪姟閫氱煡锛屽嵆璁╁摢浜涙柟娉曢渶瑕佷簨鍔℃敮鎸� -->
+      <tx:advice id="tx" transaction-manager="dataSourceTransactionManager">
+      		<tx:attributes>
+      			<tx:method name="*" propagation="REQUIRED"/>
+      		</tx:attributes>
+      </tx:advice>
+      
+       <!-- 閰嶇疆浜嬪姟鍒囬潰锛屽嵆璁╁摢浜涘寘涓嬬殑绫婚渶瑕佷簨鍔� -->
+      <aop:config>
+      		<aop:pointcut id="pointcut" expression="execution(* com.som.dao.*.*(..))"/>
+     		<aop:advisor advice-ref="tx" pointcut-ref="pointcut"/>
+      </aop:config>
+      
+ 
+      <!-- 鑷姩鎵弿 -->
+      <context:component-scan base-package="com.som"></context:component-scan>
+      
+      <!-- 閰嶇疆 杞崲鍣紝瀵逛簬鍦╞asePackage璁剧疆鐨勫寘锛堝寘鎷瓙鍖咃級涓嬬殑鎺ュ彛绫伙紝
+	濡傛灉鎺ュ彛绫荤殑鍏ㄧ被鍚嶅湪Mapper.xml鏂囦欢涓拰瀹氫箟杩囧懡鍚嶇┖闂翠竴鑷达紝
+	 灏嗚杞崲鎴恠pring鐨凚EAN锛屽湪璋冪敤 
+		鐨勫湴鏂归�氳繃@Autowired鏂瑰紡灏嗗彲浠ユ敞鍏ユ帴鍙ｅ疄渚� -->
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- <property name="sqlSessionFactoryBean" ref="sqlSessionFactoryBean" /> -->
+		<property name="basePackage" value="com.som.dao" />
+	</bean>
+</beans>

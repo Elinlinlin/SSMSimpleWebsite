@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.som.dao.IUserDao">
+
+    <resultMap type="User" id="userMap">
+        <id property="uid" column="uid"/>
+		<result property="username" column="username"/>
+		<result property="password" column="password"/>		
+		<result property="role" column="role"/>
+	</resultMap>
+
+	<select id="find" parameterType="user" resultType="user">
+		select * from user where uid=#{uid} and password=#{password}
+	</select>
+	
+	<select id="findByUid" parameterType="int" resultType="user">
+		select * from user where uid=#{uid} 
+	</select>
+	
+	<select id="findAll" resultType="user">
+	    select * from user
+	</select>
+	
+	<select id="findRole" parameterType="user" resultType="int">
+	   select role from user where uid=#{uid}
+	</select>
+	
+	<select id="findUid" parameterType="user" resultType="int">
+	   select uid from user where uid=#{uid}
+	</select>
+	
+	<delete id="delete" parameterType="user">
+	  delete  from user where uid=#{uid}
+	</delete>
+	
+	<insert id="add" parameterType="int" >
+	  insert into user(uid,username,password,role) values(#{uid},#{username},#{password},#{role})
+	</insert>
+	
+	<insert id="insert" parameterType="user">
+	  insert * from user 
+	</insert>
+	
+	<select id="findAllUser" resultType="User">
+	   select * from user order by uid desc
+	</select>
+	
+	<update id="update" parameterType="User">
+		update user set uid=#{uid},username=#{username},password=#{password},role=#{role} where uid=#{uid}
+	</update>
+	
+	<select id="findAllUid" resultType="int">
+	    select uid from user
+	</select>
+</mapper>

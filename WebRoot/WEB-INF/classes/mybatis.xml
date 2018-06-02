@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+     <!-- 设置类型别名 -->
+	<typeAliases>
+		<!-- <typeAlias type="com.som.entity.User" alias="user" />
+		<typeAlias type="com.som.entity.Student" alias="stu" />
+		<typeAlias type="com.som.entity.Fm" alias="fm" />-->	
+		 <package name="com.som.entity"/>
+	</typeAliases>
+
+	<!-- 加载映射文件 -->
+	<!-- <mappers>
+		<mapper resource="com/som/entity/StudentMapper.xml" />
+		<mapper resource="com/som/entity/UserMapper.xml" />
+		<mapper resource="com/som/entity/FmMapper.xml" />
+	</mappers>
+	 -->
+		
+</configuration>
